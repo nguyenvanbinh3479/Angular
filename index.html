@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bình Nguyễn</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/three.min.js"></script>
+	<script src="js/js.js"></script>
+	<script src="js/angular.min.js"></script>
+</head>
+<body>
+	<!-- angular --><!-- angular --><!-- angular --><!-- angular --><!-- angular --><!-- angular --><!-- angular -->
+	<!-- đưa dữ liệu vừa nhập vào {{name}} -->
+	<div ng-app="myApp" ng-controller="myCtrl" ng-init="firstName1='john';myCol='lightblue';
+		person={fName:'Bình',lName:'Nguyễn'};soluong=1;giaban=5"><!-- để sử dụng angular//ng-init khởi tạo giá trị//chuẩn thì thêm data trc ng-->
+		<p>my name is <span ng-click="changeName()" ng-bind="firstName1"></span></p><!-- ng-click thay đổi khi click vào -->
+		<p>Input something in the input box:</p>
+		<p>Name: <input type="text" ng-model="name" placeholder="enter name here"></p><!-- placeholder text ẩn phía sau -->
+		<h1>Hello {{name}}</h1>
+	<!-- lấy dữ liệu nhập vào từ name -->
+		<p>Input something in the input box:</p>
+		<p>Name: <input type="text" ng-model="name1"></p><!-- ng-model chỉ liên kết giá trị -->
+		<p ng-bind="name1"></p><!-- ng-bind hiện thị chế độ xem html -->
+	<!-- biểu thức -->
+		<p>the first expression: {{5*5}}</p>
+	<!-- module -->
+		First Name: <input type="text" ng-model="firstName | uppercase"><br><!-- uppercase in hoa --> 
+		Last Name: <input type="text" ng-model="lastName"><br>
+		<br>
+		Full Name: {{firstName + " " + lastName}}<br>
+
+		<script>
+			var app = angular.module('myApp', []);//định nghĩa
+			app.controller('myCtrl', function($scope, $timeout, $interval) {//điều khiển
+				$scope.firstName= "John";
+				$scope.lastName= "Smith";
+			// thay đổi tên khi click vào
+				$scope.changeName= function(){
+					$scope.firstName1= "Bob";
+				}
+			//lọc theo tên	
+				$scope.names = [
+					'Jani',
+					'Carl',
+					'Margareth',
+					'Hege',
+					'Joe',
+					'Gustav',
+					'Birgit',
+					'Mary',
+					'Kai'
+				];
+				// hiệu chỉnh thời gian
+				$scope.myHeader = "hello there";
+				$timeout(function (){
+					$scope.myHeader = "how are you to day";
+				}, 2000);
+				//hiển thị thời gian
+				$scope.theTime = new Date().toLocaleTimeString();
+				$interval(function (){
+					$scope.theTime = new Date().toLocaleTimeString();
+				}, 1000);
+				$scope.cars = [
+					{model: "honda", color:"red"},
+					{model: "suzuki", color:"blue"},
+					{model: "ferari", color:"black"}
+				]
+				//sự kiện
+				$scope.count = 0;	
+				//click
+				$scope.mFunction = function(){
+					$scope.count++;
+				}
+				//hiển thị
+				$scope.showMe = false;
+				$scope.mFun = function(){
+					$scope.showMe = !$scope.showMe;
+				}
+			});
+		</script>
+	<!-- màu hộp nhập dữ liệu -->
+		<input style="background-color: {{myCol}} " ng-model="myCol" value="{{myCol}}" >
+	<!-- đối tượng -->
+		<p>tên tui là: {{person.fName}}</p>
+	<!-- ràng buộc -->
+		<h2>tính chi phí</h2>
+		Số Lượng: <input type="number" ng-model="soluong">
+		Giá Bán: <input type="number" ng-model="giaban">
+		<p><strong>Tổng Chi Phí: </strong>{{soluong * giaban | currency}} </p>
+	<!-- lặp lại -->
+		<p ng-repeat="b in person">{{b}}</p><!-- |orderBy sắp xếp// | filter: 'i' lọc-->
+	<!-- xác thực nhập của ng dùng -->
+		<form ng-app="" name="myForm" ng-init="myText='binhnguyen@gmail.com'">Email:
+			<input type="email" name="myAddress" ng-model="text" required>
+			<span ng-show="myForm.myAddress.$error.email">Not a valid e-mail address</span><br>
+		<!-- trạng thái -->
+			{{myForm.myAddress2.$valid}}
+			{{myForm.myAddress2.$dirty}}
+			{{myForm.myAddress2.$touched}}
+		</form>
+	<!-- màu -->
+		<style>
+			input.ng-invalid {
+				background-color: lightblue;
+			}
+		</style>	
+		<p><input type="text" ng-model="test"></p>
+		<ul>
+		<li ng-repeat="x in names | filter:test">
+			{{ x }}
+		</li>
+		</ul>
+	<!-- hiệu chỉnh time -->
+		<h1>{{myHeader}}</h1>
+	<!-- hieent thị time -->
+		<h2>{{theTime}}</h2>
+	<!-- lựa chọn -->
+		<select ng-model="selectedName" ng-options="x for x in names"></select><br>
+	<!-- chỉ thị đối tượng -->
+		<select ng-model="selectedCar" ng-options="x.model for x in cars"></select>
+		<h1>you selected: {{selectedCar.model}}</h1>
+		<p>color is: {{selectedCar.color}}</p>
+	<!-- sự kiện -->
+		<h2 ng-mousemove="count = count + 1">mouse over me!</h2>
+		<h3>{{count}}</h3>
+	<!-- click -->
+		<button ng-click="mFunction()">click me!</button>	
+		<p>{{count}}</p>
+	<!-- hiển thị -->
+	<button ng-click="mFun()">click to show/hide</button>
+		<div ng-show="showMe">
+			<h1>Menu:</h1>
+			<div>Pizza</div>
+			<div>Pasta</div>
+			<div>Pesce</div>
+		</div>
+	<!-- text box -->
+		<form>
+			<input type="checkbox" ng-model="myVar">
+		</form>
+		<h1 ng-show="myVar">look this</h1>
+	<!-- thêm mục -->
+
+		
+
+
+	</div>
+
+	<div id="envelop">
+		<div id="header"></div>
+		<div id="banner"></div>
+		<div id="content"></div>
+		<div id="footer"></div>
+	</div>
+</body>
+</html>
